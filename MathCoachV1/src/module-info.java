@@ -4,5 +4,5 @@
 /**
  * 
  */
-module MathCoachV1 {
+module BlueTeam {
 }
