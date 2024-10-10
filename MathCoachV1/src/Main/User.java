@@ -1,5 +1,9 @@
 package Main;
 
+/**
+ * User class will store values related to the user
+ * of the math coach such as score and setting values.
+ */
 public class User {
 
 	private int score;
