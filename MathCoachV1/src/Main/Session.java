@@ -2,7 +2,9 @@ package Main;
 
 import java.text.DecimalFormat;
 
+
 public class Session {
+
 	
 	private long startTime;
 	private long endTime;
@@ -110,3 +112,4 @@ public class Session {
 		return timePerProblem;
 	}
 }
+
