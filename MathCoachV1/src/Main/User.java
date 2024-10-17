@@ -51,12 +51,12 @@ public class User {
 			List<Integer> corrOperand = new ArrayList<>();
 			List<Integer> wrongOperand = new ArrayList<>();
 			for (MathQuestion question : correctQuestion) {
-				corrOperand.add(question.getOperandOne);
-				corrOperand.add(question.getOperandTwo);
+				corrOperand.add(question.getOperandOne());
+				corrOperand.add(question.getOperandTwo());
 			}
 			for (MathQuestion question : wrongQuestion) {
-				wrongOperand.add(question.getOperandOne);
-				wrongOperand.add(question.getOperandTwo);
+				wrongOperand.add(question.getOperandOne());
+				wrongOperand.add(question.getOperandTwo());
 			}
 			if ((corrOperand.size() > wrongOperand.size()) && adaptDifficult < 3) {
 				adaptDifficult ++;
@@ -71,7 +71,7 @@ public class User {
 			int total = 0;
 			int count = 0;
 			for (MathQuestion question : correctQuestion) {
-				total = total + question.getTimeTaken();
+				total = (int) (total + question.getTimeTaken());
 				count ++;
 			}
 			adaptSpeed = (total / count) - 1;
