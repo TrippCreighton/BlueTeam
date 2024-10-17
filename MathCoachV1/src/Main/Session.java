@@ -2,8 +2,7 @@ package Main;
 
 import java.text.DecimalFormat;
 public class Session {
-   //test
-}
+
 	
 	private long startTime;
 	private long endTime;
