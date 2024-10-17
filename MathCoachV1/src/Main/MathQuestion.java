@@ -1,6 +1,6 @@
 package Main;
 
-public class MathQuestion {
+	
 import java.util.Scanner;
 import java.util.Random;
 
