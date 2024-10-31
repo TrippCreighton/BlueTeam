@@ -4,5 +4,5 @@
 /**
  * 
  */
-module BlueTeamTest {
+module BlueTeam {
 }
