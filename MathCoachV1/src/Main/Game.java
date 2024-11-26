@@ -1,15 +1,24 @@
 package Main;
 
+import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
 
 public class Game extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = -1285670934175365101L;
 	
+	private BufferedImage backgroundImage;
 	public static final int WIDTH = 1000, HEIGHT = WIDTH / 12 * 9;            //game window size
 	private Thread thread;													  //create thread for game to run on
 	private boolean running = false;
@@ -38,13 +47,20 @@ public class Game extends Canvas implements Runnable {
 		this.addMouseListener(menu);
 		new Window(WIDTH, HEIGHT, "Math Coach", this);
 		
+	      try {
+	            backgroundImage = ImageIO.read(new File("Background.jpg")); // Replace with image file path
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    
+		
 		
 		if(gameState == STATE.Game) {
 			handler.addObject(new Player(WIDTH/2-32, HEIGHT/2-32, ID.Player));					//render and location of avatar on screen
-			
 			handler.addObject(new MathProblem(WIDTH/2-40, HEIGHT/2+500, ID.MathProblem));
 		}
 		
+
 		
 	}
 
@@ -98,6 +114,7 @@ public class Game extends Canvas implements Runnable {
 			hud.tick();
 			
 			if(HUD.score >= 10 || HUD.time > 3600) {						//if user scores answers 10 correct or time runs out, game over
+				AnswerBox.close();
 				gameState = STATE.End;
 	
 			}
@@ -131,8 +148,13 @@ public class Game extends Canvas implements Runnable {
 		}
 		
 		Graphics g = bs.getDrawGraphics();
-		g.setColor(Color.black);
-		g.fillRect(0, 0, WIDTH, HEIGHT);							//background in game window
+	    if (backgroundImage != null) {
+            g.drawImage(backgroundImage, 0, 0, WIDTH, HEIGHT, null); // Adjust WIDTH and HEIGHT if needed
+        } else {
+            // Fallback to a black background if the image fails to load
+            g.setColor(Color.black);
+            g.fillRect(0, 0, WIDTH, HEIGHT);
+        }							//background in game window
 		
 		handler.render(g);
 		
