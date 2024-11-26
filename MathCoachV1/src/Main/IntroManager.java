@@ -6,10 +6,8 @@ import javax.sound.sampled.Clip;
 
 
 
-public class GameManager {
-	//DIMENSIONS
-	public static final int SCREEN_WIDTH = 1000;
-	public static final int SCREEN_HEIGHT = 900;
+public class IntroManager {
+	
 	public static AudioInputStream stream;
 	public static Clip clip;
 	
