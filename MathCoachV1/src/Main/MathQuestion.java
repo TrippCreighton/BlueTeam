@@ -6,6 +6,7 @@ import java.util.Random;
 
 public class MathQuestion {
 	
+	private String question;
 	private int operandOne;
 	private int operandTwo;
 	private String correctAnswer;
@@ -15,31 +16,38 @@ public class MathQuestion {
 	private double startTime;
 	private double endTime;
 	
+	
 	//Constructor
 	public MathQuestion() {
-		operandOne = 0;
-		operandTwo = 0;
-		correctAnswer = "";
+		
+		
+		setOperands();
+		setCorrectAnswer();
+		setQuestion();
 		userAnswer = "";
 		timeTaken = 0.0;
 		isCorrect = false;
 		startTime = 0;
 		endTime = 0;
+		
+		
 	}
 	
 	//Print statements are for testing
 	public void genProblem() {
-		setOperands();
-		System.out.println("Solve: " + operandOne + " + " + operandTwo);
-		setCorrectAnswer();
-		System.out.println("Correct Answer: " + correctAnswer);
-		setUserAnswer();
-		System.out.println("User Answer: " + userAnswer);
-		setIsCorrect();
-		System.out.println("Is Correct?: " + isCorrect);
-		setTimeTaken();
-		System.out.println("Time Taken: " + timeTaken);
-		System.out.println();
+		//setOperands();
+		//System.out.println("Solve: " + operandOne + " + " + operandTwo);
+		//setCorrectAnswer();
+		//System.out.println("Correct Answer: " + correctAnswer);
+		//setUserAnswer();
+		//System.out.println("User Answer: " + userAnswer);
+		//setIsCorrect();
+		//System.out.println("Is Correct?: " + isCorrect);
+		//setTimeTaken();
+		//System.out.println("Time Taken: " + timeTaken);
+		//System.out.println();
+		//setQuestion();
+
 	}
 	
 	//sets the two operand variables to random numbers within range
@@ -116,5 +124,13 @@ public class MathQuestion {
 	 private double formatTime(double d) {
 		double seconds = d / 1000;
 		return seconds;
+	}
+
+	public String getQuestion() {
+		return question;
+	}
+
+	public void setQuestion() {
+		question = Integer.toString(operandOne) + " + " + Integer.toString(operandTwo) + " =";
 	}
 }

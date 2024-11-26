@@ -10,11 +10,11 @@ public class Intro extends JPanel implements Runnable {
 	private JFrame window = new JFrame();
 	private String imagePath = "Intro.png";
 	private int wait = 2000; // 2 seconds
-	private String audioFile = "bg-music.wav";
+	private String audioFile = "Menu_Music.wav";
 	
 	public Intro(){
 		playAudio();
-		this.setPreferredSize(new Dimension(GameManager.SCREEN_WIDTH, GameManager.SCREEN_HEIGHT));
+		this.setPreferredSize(new Dimension(Game.WIDTH, Game.HEIGHT));
 		window.add(this);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.pack();
@@ -26,10 +26,10 @@ public class Intro extends JPanel implements Runnable {
 	public void playAudio() {
 		try {
 		File audioPath = new File(audioFile);
-		GameManager.stream = AudioSystem.getAudioInputStream(audioPath);
-		GameManager.clip = AudioSystem.getClip();
-		GameManager.clip.open(GameManager.stream);
-		GameManager.clip.start();
+		IntroManager.stream = AudioSystem.getAudioInputStream(audioPath);
+		IntroManager.clip = AudioSystem.getClip();
+		IntroManager.clip.open(IntroManager.stream);
+		IntroManager.clip.start();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -44,7 +44,7 @@ public class Intro extends JPanel implements Runnable {
 		try {
 			Thread.sleep(wait);
 			window.dispose();
-			Menu menu = new Menu();
+			Game game = new Game();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
