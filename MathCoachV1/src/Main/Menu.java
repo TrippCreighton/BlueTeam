@@ -40,6 +40,8 @@ public class Menu extends MouseAdapter {
 				game.gameState = STATE.Game;
 				handler.addObject(new Player(Game.WIDTH/2-32, Game.HEIGHT/2-32, ID.Player));					//render and location of avatar on screen
 				handler.addObject(new MathProblem(Game.WIDTH/2-40, Game.HEIGHT/2+500, ID.MathProblem));
+				AnswerBox box = new AnswerBox(100, 100, "Answer Box", "Answer Box");
+				box.show();
 				return;
 			}
 		}
@@ -51,6 +53,8 @@ public class Menu extends MouseAdapter {
 				game.gameState = STATE.Game;
 				handler.addObject(new Player(Game.WIDTH/2-32, Game.HEIGHT/2-32, ID.Player));					//render and location of avatar on screen
 				handler.addObject(new MathProblem(Game.WIDTH/2-40, Game.HEIGHT/2+500, ID.MathProblem));
+				AnswerBox box = new AnswerBox(100, 200, "Answer Box", "Answer Box");
+				box.show();
 				return;
 			}
 		}
@@ -132,6 +136,22 @@ public class Menu extends MouseAdapter {
 			}
 		}
 		
+		//easy, normal, hard buttons
+		if(game.gameState == STATE.Dif) {
+			if(mouseOver(mx, my, 80, 300, 200, 80)) {
+				
+				//easy clicked, make speed/problem difficulty match easy
+			}
+			else if(mouseOver(mx, my, 390, 300, 200, 80)) {
+				
+				//normal clicked, make speed/problem dif. match normal
+			}
+			else if(mouseOver(mx, my, 700, 300, 200, 80)) {
+				
+				//hard clicked, make speed/problem difficulty match hard
+			}
+		}
+		
 		//exit button
 		if(game.gameState == STATE.Menu) {
 			if(mouseOver(mx, my, 335, 500, 300, 80)) {
@@ -159,6 +179,28 @@ public class Menu extends MouseAdapter {
 				return;
 			}
 		}
+		if(game.gameState == STATE.Music) {
+			if(mouseOver(mx, my, 80, 300, 200, 80)) {
+				IntroManager.clip.stop();
+				IntroManager.clip.close();
+				Intro.playAudio2();
+			}
+			else if(mouseOver(mx, my, 390, 300, 200, 80)) {
+				IntroManager.clip.stop();
+				IntroManager.clip.close();
+				Intro.playAudio3();
+			}
+			else if(mouseOver(mx, my, 700, 300, 200, 80)) {
+				IntroManager.clip.stop();
+				IntroManager.clip.close();
+				Intro.playAudio4();
+			}
+			else if(mouseOver(mx, my, 390, 450, 200, 80)) {
+				IntroManager.clip.stop();
+				IntroManager.clip.close();
+				Intro.playAudio();
+			}
+		}
 		
 	}
 	
@@ -184,7 +226,7 @@ public class Menu extends MouseAdapter {
 		Font fnt2 = new Font("arial", 1, 60);
 		
 		g.setFont(fnt);
-		g.setColor(Color.blue);
+		g.setColor(Color.white);
 		g.drawString("MATH", 320, 150);
 		g.drawString("COACH", 260, 260);
 		
@@ -194,13 +236,13 @@ public class Menu extends MouseAdapter {
 		g.drawRect(335, 300, 300, 80);
 		
 		g.setFont(fnt2);
-		g.setColor(Color.blue);
+		g.setColor(Color.white);
 		g.drawString("OPTIONS", 350, 465);
 		g.setColor(Color.white);
 		g.drawRect(335, 400, 300, 80);
 		
 		g.setFont(fnt2);
-		g.setColor(Color.blue);
+		g.setColor(Color.white);
 		g.drawString("EXIT", 415, 562);
 		g.setColor(Color.white);
 		g.drawRect(335, 500, 300, 80);
@@ -212,7 +254,7 @@ public class Menu extends MouseAdapter {
 			Font fnt3 = new Font("arial", 1, 40);
 			
 			g.setFont(fnt);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("OPTIONS", 220, 200);
 			
 			g.setFont(fnt3);
@@ -221,19 +263,19 @@ public class Menu extends MouseAdapter {
 			g.drawRect(335, 300, 300, 80);
 			
 			g.setFont(fnt3);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("MUSIC", 420, 455);
 			g.setColor(Color.white);
 			g.drawRect(335, 400, 300, 80);
 			
 			g.setFont(fnt3);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("CHARACTER", 357, 555);
 			g.setColor(Color.white);
 			g.drawRect(335, 500, 300, 80);
 			
 			g.setFont(fnt3);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("BACK", 425, 656);
 			g.setColor(Color.white);
 			g.drawRect(335, 600, 300, 80);
@@ -246,7 +288,7 @@ public class Menu extends MouseAdapter {
 			Font fnt3 = new Font("arial", 1, 40);
 			
 			g.setFont(fnt);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("GAME OVER", 100, 200);
 			
 			g.setFont(fnt2);
@@ -254,13 +296,13 @@ public class Menu extends MouseAdapter {
 			g.drawString("TIME: " + hud.getTime(), 370, 455);
 			
 			g.setFont(fnt3);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("TRY AGAIN", 375, 555);
 			g.setColor(Color.white);
 			g.drawRect(335, 500, 300, 80);
 			
 			g.setFont(fnt3);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("EXIT", 440, 656);
 			g.setColor(Color.white);
 			g.drawRect(335, 600, 300, 80);
@@ -272,32 +314,42 @@ public class Menu extends MouseAdapter {
 			Font fnt2 = new Font("arial", 1, 60);
 			
 			g.setFont(fnt);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("CHARACTER",120, 150);
 			g.drawString("SELECTION", 140, 260);
 			
-			g.drawImage(new ImageIcon(image1).getImage(), 70, 420, null);
+			g.setColor(Color.black);
+			g.fillRect(50, 400, 100, 100);
 			g.setColor(Color.white);
 			g.drawRect(50, 400, 100, 100);
+			g.drawImage(new ImageIcon(image1).getImage(), 70, 420, null);
 			
-			g.drawImage(new ImageIcon(image2).getImage(), 270, 420, null);
+			g.setColor(Color.black);
+			g.fillRect(250, 400, 100, 100);
 			g.setColor(Color.white);
 			g.drawRect(250, 400, 100, 100);
+			g.drawImage(new ImageIcon(image2).getImage(), 270, 420, null);
 			
-			g.drawImage(new ImageIcon(image3).getImage(), 470, 420, null);
+			g.setColor(Color.black);
+			g.fillRect(450, 400, 100, 100);
 			g.setColor(Color.white);
 			g.drawRect(450, 400, 100, 100);
+			g.drawImage(new ImageIcon(image3).getImage(), 470, 420, null);
 			
-			g.drawImage(new ImageIcon(image4).getImage(), 670, 420, null);
+			g.setColor(Color.black);
+			g.fillRect(650, 400, 100, 100);
 			g.setColor(Color.white);
 			g.drawRect(650, 400, 100, 100);
+			g.drawImage(new ImageIcon(image4).getImage(), 670, 420, null);
 			
-			g.drawImage(new ImageIcon(image5).getImage(), 870, 420, null);
+			g.setColor(Color.black);
+			g.fillRect(850, 400, 100, 100);
 			g.setColor(Color.white);
 			g.drawRect(850, 400, 100, 100);
+			g.drawImage(new ImageIcon(image5).getImage(), 870, 420, null);
 			
 			g.setFont(fnt2);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("BACK", 400, 660);
 			g.setColor(Color.white);
 			g.drawRect(335, 600, 300, 80);
@@ -308,29 +360,29 @@ public class Menu extends MouseAdapter {
 			Font fnt3 = new Font("arial", 1, 40);
 		
 			g.setFont(fnt);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("DIFFICULTY", 135, 180);
 			
 			g.setFont(fnt3);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("EASY", 127, 357);
 			g.setColor(Color.white);
 			g.drawRect(80, 300, 200, 80);
 			
 			g.setFont(fnt3);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("NORMAL", 402, 357);
 			g.setColor(Color.white);
 			g.drawRect(390, 300, 200, 80);
 			
 			g.setFont(fnt3);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("HARD", 745, 357);
 			g.setColor(Color.white);
 			g.drawRect(700, 300, 200, 80);
 			
 			g.setFont(fnt2);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("BACK", 400, 660);
 			g.setColor(Color.white);
 			g.drawRect(335, 600, 300, 80);
@@ -343,32 +395,38 @@ public class Menu extends MouseAdapter {
 			Font fnt3 = new Font("arial", 1, 40);
 			
 			g.setFont(fnt);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("MUSIC", 300, 160);
 			
 			g.setFont(fnt2);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("BACK", 400, 660);
 			g.setColor(Color.white);
 			g.drawRect(335, 600, 300, 80);
 			
 			g.setFont(fnt3);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("ONE", 135, 357);
 			g.setColor(Color.white);
 			g.drawRect(80, 300, 200, 80);
 			
 			g.setFont(fnt3);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("TWO", 440, 357);
 			g.setColor(Color.white);
 			g.drawRect(390, 300, 200, 80);
 			
 			g.setFont(fnt3);
-			g.setColor(Color.blue);
+			g.setColor(Color.white);
 			g.drawString("THREE", 730, 357);
 			g.setColor(Color.white);
 			g.drawRect(700, 300, 200, 80);
+			
+			g.setFont(fnt3);
+			g.setColor(Color.white);
+			g.drawString("FOUR", 430, 505);
+			g.setColor(Color.white);
+			g.drawRect(390, 450, 200, 80);
 		}
 	}
 

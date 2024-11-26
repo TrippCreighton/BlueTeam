@@ -8,15 +8,10 @@ import Main.Game.STATE;
 
 public class MathProblem extends GameObject {
 	
-	MathQuestion question = new MathQuestion();
-	
-	
-	private static String problem;		
+	public static String problem = "4 + 4 = ";						//generate problems in random order and assign the to problem variable as a string
 
-	
 	public MathProblem(int x, int y, ID id) {
 		super(x, y, id);
-		problem = question.getQuestion();
 		
 	}
 	
