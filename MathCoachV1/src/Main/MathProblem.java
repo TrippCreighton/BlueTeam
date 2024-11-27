@@ -18,13 +18,14 @@ public class MathProblem extends GameObject {
 	private boolean isCorrect;
 	private double startTime;
 	private double endTime;
+	private int diff;
 	
-	public MathProblem(int x, int y, ID id) {
+	public MathProblem(int x, int y, int diffi, ID id) {
 		super(x, y, id);
+		diff = diffi;
 		setOperands();
 		setCorrectAnswer();
 		setProblem();
-		
 	}
 	
 	public void setOperands() {
@@ -38,7 +39,7 @@ public class MathProblem extends GameObject {
 
 	private int getRandomNumber() {
 		Random r = new Random();
-		int num = r.nextInt((9 - 1) + 1) + 1;
+		int num = r.nextInt(diff) ;
 		return num;
 	}
 	

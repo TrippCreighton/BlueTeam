@@ -11,8 +11,9 @@ public class AnswerBox {
     private boolean isCorrect = false;
     private Handler handler;
     private int correct;
+    private int diff;
     
-    public AnswerBox(int width, int height, String title, Handler  hand) {
+    public AnswerBox(int width, int height, String title, Handler  hand, int diff) {
         
         dialog = new JDialog((Frame) null, title, false); 
         dialog.setSize(width, height);
@@ -21,11 +22,10 @@ public class AnswerBox {
         dialog.setUndecorated(true);
 
         this.handler = hand;
+        this.diff = diff;
+        System.out.print(diff);
 
-        MathProblem problem = new MathProblem(Game.WIDTH/2-40, Game.HEIGHT/2+500, ID.MathProblem);
-		handler.addObject(new Player(Game.WIDTH/2-32, Game.HEIGHT/2-32, ID.Player));					//render and location of avatar on screen
-		handler.addObject(problem);
-		correct = problem.getCorrectAnswer();
+        createProblem();
 
         // Input field
         JTextField inputField = new JTextField();
@@ -65,11 +65,11 @@ public class AnswerBox {
         });
 
         //location on screen
-        dialog.setLocation(1200, 375);
+        dialog.setLocation(Game.WIDTH/2+800, Game.HEIGHT/2+100);
     }
 
     public void createProblem() {
-    	MathProblem problem = new MathProblem(Game.WIDTH/2-40, Game.HEIGHT/2+500, ID.MathProblem);
+    	MathProblem problem = new MathProblem(Game.WIDTH/2-40, Game.HEIGHT/2+500, diff, ID.MathProblem);
 		handler.addObject(new Player(Game.WIDTH/2-32, Game.HEIGHT/2-32, ID.Player));					//render and location of avatar on screen
 		handler.addObject(problem);
 		correct = problem.getCorrectAnswer();

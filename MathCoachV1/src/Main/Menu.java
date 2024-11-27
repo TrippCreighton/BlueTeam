@@ -24,10 +24,18 @@ public class Menu extends MouseAdapter {
 	private String image4 = "Char_Select4.png";
 	private String image5 = "Char_Select5.png";
 	
+	private int difficult = 3;
+	private int reqScore;
+	private int reqTime;
+	
 	public Menu(Game game, Handler handler, HUD hud) {
 		this.game = game;
 		this.hud = hud;
 		this.handler = handler;
+	}
+	
+	public int getDiff() {
+		return difficult;
 	}
 	
 	public void mousePressed(MouseEvent e) {
@@ -38,8 +46,10 @@ public class Menu extends MouseAdapter {
 		if(game.gameState == STATE.Menu) {
 			if(mouseOver(mx, my, 335, 300, 300, 80)) {
 				game.gameState = STATE.Game;
+				HUD.time = 0;
+				HUD.score = 0;
 
-				AnswerBox box = new AnswerBox(100, 100, "Answer Box", handler);
+				AnswerBox box = new AnswerBox(100, 100, "Answer Box", handler, difficult);
 				box.show();
 				
 				return;
@@ -52,7 +62,7 @@ public class Menu extends MouseAdapter {
 				HUD.score = 0;
 				game.gameState = STATE.Game;
 
-				AnswerBox box = new AnswerBox(100, 100, "Answer Box", handler);
+				AnswerBox box = new AnswerBox(100, 100, "Answer Box", handler, difficult);
 				box.show();
 				
 				return;
@@ -140,15 +150,15 @@ public class Menu extends MouseAdapter {
 		if(game.gameState == STATE.Dif) {
 			if(mouseOver(mx, my, 80, 300, 200, 80)) {
 				
-				//easy clicked, make speed/problem difficulty match easy
+				difficult = 3; //sets difficulty to easy
 			}
 			else if(mouseOver(mx, my, 390, 300, 200, 80)) {
 				
-				//normal clicked, make speed/problem dif. match normal
+				difficult = 6; //sets difficulty to easy normal
 			}
 			else if(mouseOver(mx, my, 700, 300, 200, 80)) {
 				
-				//hard clicked, make speed/problem difficulty match hard
+				difficult = 10; //sets difficulty to easy hard
 			}
 		}
 		
@@ -161,7 +171,9 @@ public class Menu extends MouseAdapter {
 		}
 		if(game.gameState == STATE.End) {
 			if(mouseOver(mx, my, 335, 600, 300, 80)) {
-				System.exit(1);
+				HUD.time = 0;
+				HUD.score = 0;
+				game.gameState = STATE.Menu;
 				return;
 			}
 		}
@@ -218,6 +230,27 @@ public class Menu extends MouseAdapter {
 	
 	public void tick() {
 		
+		if(difficult == 3) {
+			reqScore = 10;
+			reqTime = 3600;
+		}
+		
+		if(difficult == 6) {
+			reqScore = 20;
+			reqTime = 2400;
+		}
+		
+		if(difficult == 10) {
+			reqScore = 30;
+			reqTime = 1200;
+		}
+		
+		if(HUD.score >= reqScore || HUD.time > reqTime) {
+			AnswerBox.close();
+			handler.clearGame();
+			game.gameState = STATE.End;
+
+		}
 	}
 	
 	public void render(Graphics g) {
@@ -294,6 +327,8 @@ public class Menu extends MouseAdapter {
 			g.setFont(fnt2);
 			g.drawString("SCORE: " + hud.getScore(), 340, 355);
 			g.drawString("TIME: " + hud.getTime(), 370, 455);
+			
+
 			
 			g.setFont(fnt3);
 			g.setColor(Color.white);

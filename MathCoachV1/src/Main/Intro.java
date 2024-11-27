@@ -12,7 +12,7 @@ public class Intro extends JPanel implements Runnable {
 	
 	private JFrame window = new JFrame();
 	private String imagePath = "Intro.png";
-	private int wait = 4000; // 4 seconds
+	private int wait = 0; // 4 seconds
 	private static String audioFile = "Menu_Music.wav";
 	private static String audioFile2 = "Audio_2.wav";
 	private static String audioFile3 = "Audio_3.wav";
