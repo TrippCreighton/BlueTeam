@@ -38,10 +38,10 @@ public class Menu extends MouseAdapter {
 		if(game.gameState == STATE.Menu) {
 			if(mouseOver(mx, my, 335, 300, 300, 80)) {
 				game.gameState = STATE.Game;
-				handler.addObject(new Player(Game.WIDTH/2-32, Game.HEIGHT/2-32, ID.Player));					//render and location of avatar on screen
-				handler.addObject(new MathProblem(Game.WIDTH/2-40, Game.HEIGHT/2+500, ID.MathProblem));
-				AnswerBox box = new AnswerBox(100, 100, "Answer Box", "Answer Box");
+
+				AnswerBox box = new AnswerBox(100, 100, "Answer Box", handler);
 				box.show();
+				
 				return;
 			}
 		}
@@ -51,10 +51,10 @@ public class Menu extends MouseAdapter {
 				HUD.time = 0;
 				HUD.score = 0;
 				game.gameState = STATE.Game;
-				handler.addObject(new Player(Game.WIDTH/2-32, Game.HEIGHT/2-32, ID.Player));					//render and location of avatar on screen
-				handler.addObject(new MathProblem(Game.WIDTH/2-40, Game.HEIGHT/2+500, ID.MathProblem));
-				AnswerBox box = new AnswerBox(100, 200, "Answer Box", "Answer Box");
+
+				AnswerBox box = new AnswerBox(100, 100, "Answer Box", handler);
 				box.show();
+				
 				return;
 			}
 		}

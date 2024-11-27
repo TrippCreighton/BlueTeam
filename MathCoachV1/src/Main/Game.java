@@ -33,7 +33,8 @@ public class Game extends Canvas implements Runnable {
 		End,
 		Char,
 		Dif,
-		Music
+		Music,
+		Question
 		
 	};
 	
@@ -91,7 +92,7 @@ public class Game extends Canvas implements Runnable {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
 			lastTime = now;
-			while(delta >= 1) {											//game loop
+			while(delta >= 1) {	//game loop
 				tick();
 				delta--;	
 			}
@@ -109,12 +110,24 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	private void tick() {
-		handler.tick();
+		//handler.tick();
 		if(gameState == STATE.Game) {
 			hud.tick();
 			
-			if(HUD.score >= 10 || HUD.time > 3600) {						//if user scores answers 10 correct or time runs out, game over
+			
+			
+			//handler.addObject(new Player(Game.WIDTH/2-32, Game.HEIGHT/2-32, ID.Player));					//render and location of avatar on screen
+			//handler.addObject(new MathProblem(Game.WIDTH/2-40, Game.HEIGHT/2+500, ID.MathProblem));
+			
+			//handler.tick();
+			//box.show();
+			
+			//gameState = STATE.Question;
+			
+			
+			if(HUD.score >= 10 || HUD.time > 3600) {	//if user scores answers 10 correct or time runs out, game over
 				AnswerBox.close();
+				handler.clearGame();
 				gameState = STATE.End;
 	
 			}
@@ -135,6 +148,9 @@ public class Game extends Canvas implements Runnable {
 			menu.tick();
 		}
 		else if(gameState == STATE.Music){
+			menu.tick();
+		}
+		else if(gameState == STATE.Question){
 			menu.tick();
 		}
 		
@@ -160,6 +176,10 @@ public class Game extends Canvas implements Runnable {
 		
 		if(gameState == STATE.Game) {
 			hud.render(g);
+		}
+		else if(gameState == STATE.Question) {
+			hud.render(g);
+			
 		}
 		else if(gameState == STATE.Menu){
 			menu.render(g);
