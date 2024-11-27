@@ -1,5 +1,11 @@
 package Main;
 
 public class Main {
-	//test
+	
+	public static void main(String[] args) {
+		
+		Session session = new Session();
+		session.play();
+		
+    }
 }

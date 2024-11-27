@@ -1,5 +1,4 @@
 package Main;
-
 	
 import java.util.Scanner;
 import java.util.Random;
@@ -8,6 +7,7 @@ public class MathQuestion {
 	
 	private int operandOne;
 	private int operandTwo;
+	private int answer;
 	private String correctAnswer;
 	private String userAnswer;
 	private double timeTaken;
@@ -19,8 +19,9 @@ public class MathQuestion {
 	public MathQuestion() {
 		operandOne = 0;
 		operandTwo = 0;
+		answer = 0;
 		correctAnswer = "";
-		userAnswer = "";
+		userAnswer = null;
 		timeTaken = 0.0;
 		isCorrect = false;
 		startTime = 0;
@@ -33,7 +34,9 @@ public class MathQuestion {
 		System.out.println("Solve: " + operandOne + " + " + operandTwo);
 		setCorrectAnswer();
 		System.out.println("Correct Answer: " + correctAnswer);
+		startTime = System.currentTimeMillis();
 		setUserAnswer();
+		endTime = System.currentTimeMillis(); 
 		System.out.println("User Answer: " + userAnswer);
 		setIsCorrect();
 		System.out.println("Is Correct?: " + isCorrect);
@@ -57,18 +60,23 @@ public class MathQuestion {
 	
 	//sets input from user and sets userAnswer variable to the input
 	public void setUserAnswer() {
-		startTime = System.currentTimeMillis();
 		System.out.println("Enter Answer: ");
-		Scanner scanner = new Scanner(System.in);
-		int answer = scanner.nextInt();
-		userAnswer = Integer.toString(answer);
-		endTime = System.currentTimeMillis();
+		try {
+			Scanner scanner = new Scanner(System.in);
+			answer = scanner.nextInt();
+		} catch (Exception e) {
+			System.out.println("Please Input A Number");
+			setUserAnswer();
+		}
+		finally {
+			userAnswer = Integer.toString(answer);
+		}
 	}
 	
 	//Finds the elapsed time, calls the format method to format it, and sets time taken to it.
 	public void setTimeTaken() {
 		timeTaken = formatTime(endTime - startTime);
-		}
+	}
 	
 	//sets isCorrect based on if correctAnswer equals userAnswer
 	public void setIsCorrect() {
@@ -108,7 +116,8 @@ public class MathQuestion {
 	//generates a random number from 1 to 9
 	private int getRandomNumber() {
 		Random r = new Random();
-		int num = r.nextInt((9 - 1) + 1) + 1;
+		int rangeHigh = Session.getRangeHigh();
+		int num = r.nextInt((rangeHigh - 1) + 1) + 1;
 		return num;
 	}
 	
