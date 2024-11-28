@@ -8,9 +8,12 @@ import java.awt.event.ActionListener;
 public class AnswerBox {
     private static JDialog dialog;
     private String userInput; // Captured user input
-
+    private boolean isCorrect = false;
+    private Handler handler;
+    private int correct;
+    private int diff;
     
-    public AnswerBox(int width, int height, String title, String question) {
+    public AnswerBox(int width, int height, String title, Handler  hand, int diff) {
         
         dialog = new JDialog((Frame) null, title, false); 
         dialog.setSize(width, height);
@@ -18,10 +21,11 @@ public class AnswerBox {
         dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         dialog.setUndecorated(true);
 
+        this.handler = hand;
+        this.diff = diff;
+        System.out.print(diff);
 
-        JLabel questionLabel = new JLabel(question, SwingConstants.CENTER);
-        questionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        dialog.add(questionLabel, BorderLayout.CENTER);
+        createProblem();
 
         // Input field
         JTextField inputField = new JTextField();
@@ -37,25 +41,44 @@ public class AnswerBox {
                 userInput = inputField.getText(); // Capture input
                 try {
                     int answer = Integer.parseInt(userInput);
-                    if (answer == 8) { // Replace with problem answer
+                    if (answer == correct) { // Replace with problem answer
+                    	isCorrect = true;
                         HUD.score++;
                         inputField.setText("");
-                    } else {
+                        handler.clearGame();
+                        createProblem();
+                        
+                    } 
+                    
+                    else {
                         inputField.setText("");
+                        isCorrect = false;
                     }
-                } catch (NumberFormatException ex) {
+                } 
+                
+                catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(dialog, "Please enter a valid number.");
                     inputField.setText("");
                 }
               
-            }
+            } 
         });
 
         //location on screen
-        dialog.setLocation(1200, 375);
+        dialog.setLocation(Game.WIDTH/2+800, Game.HEIGHT/2+100);
     }
 
+    public void createProblem() {
+    	MathProblem problem = new MathProblem(Game.WIDTH/2-40, Game.HEIGHT/2+500, diff, ID.MathProblem);
+		handler.addObject(new Player(Game.WIDTH/2-32, Game.HEIGHT/2-32, ID.Player));					//render and location of avatar on screen
+		handler.addObject(problem);
+		correct = problem.getCorrectAnswer();
+    }
  
+    public boolean getIsCorrect() {
+    	return isCorrect;
+    }
+    
     public void show() {
         dialog.setVisible(true);
     }

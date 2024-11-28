@@ -25,6 +25,8 @@ public class Game extends Canvas implements Runnable {
 	private Handler handler;
 	private HUD hud;
 	private Menu menu;
+	private int speed;
+	private int quests;
 	
 	public enum STATE{
 		Menu,
@@ -33,7 +35,8 @@ public class Game extends Canvas implements Runnable {
 		End,
 		Char,
 		Dif,
-		Music
+		Music,
+		Question
 		
 	};
 	
@@ -49,16 +52,10 @@ public class Game extends Canvas implements Runnable {
 		
 	      try {
 	            backgroundImage = ImageIO.read(new File("Background.jpg")); // Replace with image file path
-	        } catch (IOException e) {
+	        } 
+	      catch (IOException e) {
 	            e.printStackTrace();
 	        }
-	    
-		
-		
-		if(gameState == STATE.Game) {
-			handler.addObject(new Player(WIDTH/2-32, HEIGHT/2-32, ID.Player));					//render and location of avatar on screen
-			handler.addObject(new MathProblem(WIDTH/2-40, HEIGHT/2+500, ID.MathProblem));
-		}
 		
 
 		
@@ -91,7 +88,7 @@ public class Game extends Canvas implements Runnable {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
 			lastTime = now;
-			while(delta >= 1) {											//game loop
+			while(delta >= 1) {	//game loop
 				tick();
 				delta--;	
 			}
@@ -109,15 +106,10 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	private void tick() {
-		handler.tick();
 		if(gameState == STATE.Game) {
 			hud.tick();
+			menu.tick();
 			
-			if(HUD.score >= 10 || HUD.time > 3600) {						//if user scores answers 10 correct or time runs out, game over
-				AnswerBox.close();
-				gameState = STATE.End;
-	
-			}
 		}
 		else if(gameState == STATE.Menu){
 			menu.tick();
@@ -135,6 +127,9 @@ public class Game extends Canvas implements Runnable {
 			menu.tick();
 		}
 		else if(gameState == STATE.Music){
+			menu.tick();
+		}
+		else if(gameState == STATE.Question){
 			menu.tick();
 		}
 		
@@ -160,6 +155,10 @@ public class Game extends Canvas implements Runnable {
 		
 		if(gameState == STATE.Game) {
 			hud.render(g);
+		}
+		else if(gameState == STATE.Question) {
+			hud.render(g);
+			
 		}
 		else if(gameState == STATE.Menu){
 			menu.render(g);
