@@ -7,6 +7,9 @@ public class HUD {
 	
 	public static int score = 0;
 	public static int time = 0;
+	public static int session = Integer.parseInt(XMLReader.readSession("UserData.xml"));
+	public static int maxScore = 0;
+	public static int maxTime = 0;
 	
 	
 	public void tick() {
@@ -15,8 +18,9 @@ public class HUD {
 	
 	public void render(Graphics g) {
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-		g.drawString("SCORE: " + score, 700, 38);
-		g.drawString("TIME: " + time/120, 500, 38);
+		g.drawString("SCORE: " + score + " / " + maxScore, 700, 38);
+		g.drawString("TIME: " + time/120 + " / " + maxTime/120, 500, 38);
+		g.drawString("SESSION: " + XMLReader.readSession("UserData.xml"), 300, 38);
 	}
 	
 	public void score(int score) {
@@ -33,6 +37,14 @@ public class HUD {
 	
 	public int getTime() {
 		return time/120;
+	}
+	
+	public int getSession() {
+		return session;
+	}
+	
+	public void updateSession() {
+		
 	}
 
 }

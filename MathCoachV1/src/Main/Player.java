@@ -9,28 +9,29 @@ import Main.Game.STATE;
 
 public class Player extends GameObject {
 	
-	public static String imagePath = "Character1.png";
+	public static String imagePath = "resources/Character1.png";
 
 	public Player(int x, int y, ID id) {
 		super(x, y, id);
 		
 	}
 	
-	public static void setChar(int Char) {
+	public static void setChar() {
+		int Char = Integer.parseInt(XMLReader.readCharacter("UserData.xml"));
 		if(Char == 2) {
-			imagePath = "Character2.png";
+			imagePath = "resources/Character2.png";
 		}
 		else if(Char == 3) {
-			imagePath = "Character3.png";
+			imagePath = "resources/Character3.png";
 		}
 		else if(Char == 4) {
-			imagePath = "Character4.png";
+			imagePath = "resources/Character4.png";
 		}
 		else if(Char == 5) {
-			imagePath = "Character5.png";
+			imagePath = "resources/Character5.png";
 		}
 		else {
-			imagePath = "Character1.png";
+			imagePath = "resources/Character1.png";
 		}
 	}
 

@@ -25,6 +25,8 @@ public class Game extends Canvas implements Runnable {
 	private Handler handler;
 	private HUD hud;
 	private Menu menu;
+	public static XMLWriter writer = new XMLWriter();
+	public static XMLReader reader = new XMLReader();
 	private int speed;
 	private int quests;
 	
@@ -51,7 +53,7 @@ public class Game extends Canvas implements Runnable {
 		new Window(WIDTH, HEIGHT, "Math Coach", this);
 		
 	      try {
-	            backgroundImage = ImageIO.read(new File("Background.jpg")); // Replace with image file path
+	            backgroundImage = ImageIO.read(new File("resources/Background.jpg")); // Replace with image file path
 	        } 
 	      catch (IOException e) {
 	            e.printStackTrace();
@@ -184,6 +186,16 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	public static void main(String args[]) {
+		String filePath = "UserData.xml";  // Path to XML file
+
+        // Check if the file exists
+        File file = new File(filePath);
+        if (!file.exists()) {
+            // File doesn't exist, so the file is created
+            XMLWriter.writeXML(filePath); 
+        }
+        
+
 		Thread gameThread = new Thread(new Intro());
 		gameThread.start();													//start instance of the game
 	}

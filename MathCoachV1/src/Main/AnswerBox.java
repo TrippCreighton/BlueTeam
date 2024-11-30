@@ -23,7 +23,6 @@ public class AnswerBox {
 
         this.handler = hand;
         this.diff = diff;
-        System.out.print(diff);
 
         createProblem();
 
@@ -43,7 +42,7 @@ public class AnswerBox {
                     int answer = Integer.parseInt(userInput);
                     if (answer == correct) { // Replace with problem answer
                     	isCorrect = true;
-                        HUD.score++;
+                        HUD.score += diff;
                         inputField.setText("");
                         handler.clearGame();
                         createProblem();
@@ -52,6 +51,7 @@ public class AnswerBox {
                     
                     else {
                         inputField.setText("");
+                        HUD.score -= diff;
                         isCorrect = false;
                     }
                 } 

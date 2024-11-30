@@ -11,12 +11,12 @@ import java.awt.*;
 public class Intro extends JPanel implements Runnable {
 	
 	private JFrame window = new JFrame();
-	private String imagePath = "Intro.png";
+	private String imagePath = "resources/Intro.png";
 	private int wait = 0; // 4 seconds
-	private static String audioFile = "Menu_Music.wav";
-	private static String audioFile2 = "Audio_2.wav";
-	private static String audioFile3 = "Audio_3.wav";
-	private static String audioFile4 = "Audio_4.wav";
+	private static String audioFile = "resources/Menu_Music.wav";
+	private static String audioFile2 = "resources/Audio_2.wav";
+	private static String audioFile3 = "resources/Audio_3.wav";
+	private static String audioFile4 = "resources/Audio_4.wav";
 	
 	public Intro(){
 		playAudio();

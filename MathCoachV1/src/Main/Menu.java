@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -18,17 +19,24 @@ public class Menu extends MouseAdapter {
 	private Handler handler;
 	private HUD hud;
 	
-	private String image1 = "Char_Select1.png";
-	private String image2 = "Char_Select2.png";
-	private String image3 = "Char_Select3.png";
-	private String image4 = "Char_Select4.png";
-	private String image5 = "Char_Select5.png";
+	private String image1 = "resources/Char_Select1.png";
+	private String image2 = "resources/Char_Select2.png";
+	private String image3 = "resources/Char_Select3.png";
+	private String image4 = "resources/Char_Select4.png";
+	private String image5 = "resources/Char_Select5.png";
 	
-	private int difficult = 3;
-	private int reqScore;
-	private int reqTime;
+	private boolean isAdapt;
+	private int difficult;
+	private int reqScore = 30;
+	private int reqTime = 3600;
+	private String sessionNum = XMLReader.readSession("UserData.xml");
+	private String scoreNum = XMLReader.readScore("UserData.xml");
 	
 	public Menu(Game game, Handler handler, HUD hud) {
+		HUD.score = 0;
+		HUD.time = 0;
+		calcAdaptDiff();
+		Player.setChar();
 		this.game = game;
 		this.hud = hud;
 		this.handler = handler;
@@ -46,8 +54,16 @@ public class Menu extends MouseAdapter {
 		if(game.gameState == STATE.Menu) {
 			if(mouseOver(mx, my, 335, 300, 300, 80)) {
 				game.gameState = STATE.Game;
+				
+				Player.setChar();
+				calcAdaptDiff();
+				calcReqTimeReqQuest(HUD.time);
+				
 				HUD.time = 0;
 				HUD.score = 0;
+				
+				HUD.maxScore = reqScore;
+				HUD.maxTime = reqTime;
 
 				AnswerBox box = new AnswerBox(100, 100, "Answer Box", handler, difficult);
 				box.show();
@@ -58,10 +74,31 @@ public class Menu extends MouseAdapter {
 		//try again button
 		if(game.gameState == STATE.End) {
 			if(mouseOver(mx, my, 335, 500, 300, 80)) {
+				
+				//Update Super-Score
+				HUD.score = HUD.score + Integer.parseInt(XMLReader.readScore("UserData.xml"));
+				XMLWriter.updateScoreXML("UserData.xml", HUD.score);
+				calcReqTimeReqQuest(HUD.time);
+				//reset HUD values
 				HUD.time = 0;
 				HUD.score = 0;
+				
+	
+				//Updates user values before starting the next session
+				Player.setChar();
+				
+				calcAdaptDiff();
+				
+				//Updates the session counter
+				XMLWriter.updateSessionXML("UserData.xml", 1 + Integer.parseInt(XMLReader.readSession("UserData.xml")));
+				
+				//Calculates the adaptive settings
+				
+				
+				HUD.maxTime = reqTime;
+				HUD.maxScore = reqScore;
 				game.gameState = STATE.Game;
-
+				
 				AnswerBox box = new AnswerBox(100, 100, "Answer Box", handler, difficult);
 				box.show();
 				
@@ -101,31 +138,57 @@ public class Menu extends MouseAdapter {
 			}
 		}
 		
+		//Delete data
+		if(game.gameState == STATE.Options) {
+			if(mouseOver(mx, my, 335, 200, 300, 80)) {
+				String filePath = "UserData.xml";  // Path to the XML file
+
+		        // Create a File object for the XML file
+		        File file = new File(filePath);
+
+		        // Check if the file exists and delete it
+		        if (file.exists()) {
+		            boolean deleted = file.delete();  // Try to delete the file
+		            if (deleted) {
+		                XMLWriter.writeXML(filePath);
+		            } else {
+		            }
+		        } else {
+		        }
+				return;
+			}
+		}
+		
 		//Char selections
 		if(game.gameState == STATE.Char) {
 			if(mouseOver(mx, my, 50, 400, 100, 100)) {
 				int Char = 1;
-				Player.setChar(Char);
+				XMLWriter.updateCharacterXML("UserData.xml", Char);
+				Player.setChar();
 				return;
 			}
 			else if(mouseOver(mx, my, 250, 400, 100, 100)) {
 				int Char = 2;
-				Player.setChar(Char);
+				XMLWriter.updateCharacterXML("UserData.xml", Char);
+				Player.setChar();
 				return;
 			}
 			else if(mouseOver(mx, my, 450, 400, 100, 100)) {
 				int Char = 3;
-				Player.setChar(Char);
+				XMLWriter.updateCharacterXML("UserData.xml", Char);
+				Player.setChar();
 				return;
 			}
 			else if(mouseOver(mx, my, 650, 400, 100, 100)) {
 				int Char = 4;
-				Player.setChar(Char);
+				XMLWriter.updateCharacterXML("UserData.xml", Char);
+				Player.setChar();
 				return;
 			}
 			else if(mouseOver(mx, my, 850, 400, 100, 100)) {
 				int Char = 5;
-				Player.setChar(Char);
+				XMLWriter.updateCharacterXML("UserData.xml", Char);
+				Player.setChar();
 				return;
 			}
 		}
@@ -150,15 +213,32 @@ public class Menu extends MouseAdapter {
 		if(game.gameState == STATE.Dif) {
 			if(mouseOver(mx, my, 80, 300, 200, 80)) {
 				
+				isAdapt = false;
+				XMLWriter.updateAdaptXML("UserData.xml", 0);
+				
 				difficult = 3; //sets difficulty to easy
+				XMLWriter.updateDifficultXML("UserData.xml", 3);
 			}
 			else if(mouseOver(mx, my, 390, 300, 200, 80)) {
 				
+				isAdapt = false;
+				XMLWriter.updateAdaptXML("UserData.xml", 0);
+				
 				difficult = 6; //sets difficulty to easy normal
+				XMLWriter.updateDifficultXML("UserData.xml", 6);
 			}
 			else if(mouseOver(mx, my, 700, 300, 200, 80)) {
 				
-				difficult = 10; //sets difficulty to easy hard
+				isAdapt = false;
+				XMLWriter.updateAdaptXML("UserData.xml", 0);
+				
+				difficult = 9; //sets difficulty to easy hard
+				XMLWriter.updateDifficultXML("UserData.xml", 9);
+			}
+			else if(mouseOver(mx, my, 390, 450, 200, 80)) {
+				
+				isAdapt = true;
+				XMLWriter.updateAdaptXML("UserData.xml", 1);
 			}
 		}
 		
@@ -169,10 +249,21 @@ public class Menu extends MouseAdapter {
 				return;
 			}
 		}
+		//back button
 		if(game.gameState == STATE.End) {
 			if(mouseOver(mx, my, 335, 600, 300, 80)) {
+				
+				HUD.score = HUD.score + Integer.parseInt(XMLReader.readScore("UserData.xml"));
+				XMLWriter.updateScoreXML("UserData.xml", HUD.score);
+				calcReqTimeReqQuest(HUD.time);
+				
 				HUD.time = 0;
 				HUD.score = 0;
+				
+				XMLWriter.updateSessionXML("UserData.xml", 1 + Integer.parseInt(XMLReader.readSession("UserData.xml")));
+				
+
+				
 				game.gameState = STATE.Menu;
 				return;
 			}
@@ -223,29 +314,38 @@ public class Menu extends MouseAdapter {
 	private boolean mouseOver(int mx, int my, int x, int y, int width, int height) {
 		if(mx > x && mx < x + width) {
 			if(my > y && my < y + height) {
-				return true;															//making sure button is clickable within it's parameters
+				return true;//making sure button is clickable within it's parameters
 			}else return false;
 		}else return false;
 	}
 	
 	public void tick() {
 		
-		if(difficult == 3) {
-			reqScore = 10;
+		if(difficult == 3 && !isAdapt) {
+			reqScore = 30;
 			reqTime = 3600;
 		}
 		
-		if(difficult == 6) {
-			reqScore = 20;
+		if(difficult == 6 && !isAdapt) {
+			reqScore = 60;
 			reqTime = 2400;
 		}
 		
-		if(difficult == 10) {
-			reqScore = 30;
+		if(difficult == 9 && !isAdapt) {
+			reqScore = 100;
 			reqTime = 1200;
 		}
 		
-		if(HUD.score >= reqScore || HUD.time > reqTime) {
+		
+		
+		
+		
+		if(HUD.score > reqScore || HUD.time > reqTime) {
+			
+			if(isAdapt) {
+				
+		}
+			
 			AnswerBox.close();
 			handler.clearGame();
 			game.gameState = STATE.End;
@@ -257,6 +357,7 @@ public class Menu extends MouseAdapter {
 		if(game.gameState == STATE.Menu) {
 		Font fnt = new Font("arial", 1, 120);
 		Font fnt2 = new Font("arial", 1, 60);
+		Font fnt3 = new Font("arial", 1, 30);
 		
 		g.setFont(fnt);
 		g.setColor(Color.white);
@@ -267,6 +368,20 @@ public class Menu extends MouseAdapter {
 		g.drawString("PLAY", 405, 360);
 		g.setColor(Color.white);
 		g.drawRect(335, 300, 300, 80);
+		
+		g.setFont(fnt3);
+		g.drawString("SUPER SCORE", 70, 360);
+		g.setColor(Color.white);
+		g.setFont(fnt2);
+		g.drawString(scoreNum, 130, 420);
+		g.setColor(Color.white);
+		
+		g.setFont(fnt3);
+		g.drawString("CURRENT SESSION", 650, 360);
+		g.setColor(Color.white);
+		g.setFont(fnt2);
+		g.drawString(sessionNum, 750, 420);
+		g.setColor(Color.white);
 		
 		g.setFont(fnt2);
 		g.setColor(Color.white);
@@ -285,15 +400,52 @@ public class Menu extends MouseAdapter {
 			Font fnt = new Font("arial", 1, 120);
 			Font fnt2 = new Font("arial", 1, 60);
 			Font fnt3 = new Font("arial", 1, 40);
+			String diffy ="";
 			
 			g.setFont(fnt);
 			g.setColor(Color.white);
-			g.drawString("OPTIONS", 220, 200);
+			g.drawString("OPTIONS", 220, 180);
 			
 			g.setFont(fnt3);
 			g.drawString("DIFFICULTY", 365, 355);
 			g.setColor(Color.white);
 			g.drawRect(335, 300, 300, 80);
+			
+			g.setFont(fnt3);
+			g.drawString("CURRENT ", 50, 250);
+			g.setColor(Color.white);
+			
+			g.setFont(fnt3);
+			g.drawString(" DIFFICULTY:", 40, 300);
+			g.setColor(Color.white);
+			
+			if(difficult == 3)
+				diffy = "EASY";
+			if(difficult == 6)
+				diffy = "NORMAL";
+			if(difficult == 9)
+				diffy = "HARD";
+			
+			if(!isAdapt) {
+				g.setFont(fnt3);
+				g.drawString(diffy, 40, 400);
+				g.setColor(Color.white);
+			}
+			
+			if(isAdapt) {
+				g.setFont(fnt3);
+				g.drawString("CURRENTLY", 40, 400);
+				g.setColor(Color.white);
+				
+				g.setFont(fnt3);
+				g.drawString("ADAPTIVE", 40, 450);
+				g.setColor(Color.white);
+			}
+			
+			g.setFont(fnt3);
+			g.drawString("DELETE DATA", 345, 250);
+			g.setColor(Color.white);
+			g.drawRect(335, 200, 300, 80);
 			
 			g.setFont(fnt3);
 			g.setColor(Color.white);
@@ -325,7 +477,7 @@ public class Menu extends MouseAdapter {
 			g.drawString("GAME OVER", 100, 200);
 			
 			g.setFont(fnt2);
-			g.drawString("SCORE: " + hud.getScore(), 340, 355);
+			g.drawString("SCORE: " + hud.getScore(), 340, 390);
 			g.drawString("TIME: " + hud.getTime(), 370, 455);
 			
 
@@ -416,6 +568,12 @@ public class Menu extends MouseAdapter {
 			g.setColor(Color.white);
 			g.drawRect(700, 300, 200, 80);
 			
+			g.setFont(fnt3);
+			g.setColor(Color.white);
+			g.drawString("ADAPTIVE", 392, 500);
+			g.setColor(Color.white);
+			g.drawRect(390, 450, 200, 80);
+			
 			g.setFont(fnt2);
 			g.setColor(Color.white);
 			g.drawString("BACK", 400, 660);
@@ -462,6 +620,71 @@ public class Menu extends MouseAdapter {
 			g.drawString("FOUR", 430, 505);
 			g.setColor(Color.white);
 			g.drawRect(390, 450, 200, 80);
+		}
+	}
+	
+	private void calcReqTimeReqQuest(int timeTaken){
+		if(isAdapt) {
+			int superScore = Integer.parseInt(XMLReader.readScore("UserData.xml"));
+			int superSession = Integer.parseInt(XMLReader.readSession("UserData.xml"));
+			
+			if(superScore / superSession <= 10) {
+				difficult = 3;
+				reqScore--;
+				reqTime += 300;
+			}
+			
+			else if(superScore / superSession <= 20) {
+				difficult = 6;
+				reqScore++;
+				reqTime -= 300;
+			}
+			
+			else {
+				difficult = 9;
+				reqScore += 5;
+				reqTime -= 300;
+			}
+			
+			
+
+		}
+		
+		else {
+			if(difficult == 3 && !isAdapt) {
+				reqScore = 30;
+				reqTime = 3600;
+			}
+			
+			if(difficult == 6 && !isAdapt) {
+				reqScore = 60;
+				reqTime = 2400;
+			}
+			
+			if(difficult == 9 && !isAdapt) {
+				reqScore = 100;
+				reqTime = 1200;
+			}
+		}
+	}
+	
+	private void calcAdaptDiff() {
+		if(0 == Integer.parseInt(XMLReader.readAdapt("UserData.xml")))
+			isAdapt = false;
+		
+		if(1 == Integer.parseInt(XMLReader.readAdapt("UserData.xml")))
+			isAdapt = true;
+		
+		if(3 == Integer.parseInt(XMLReader.readDifficult("UserData.xml"))) {
+			difficult = 3;
+		}
+		
+		if(6 == Integer.parseInt(XMLReader.readDifficult("UserData.xml"))) {
+			difficult = 6;
+		}
+		
+		if(9 == Integer.parseInt(XMLReader.readDifficult("UserData.xml"))) {
+			difficult = 9;
 		}
 	}
 
