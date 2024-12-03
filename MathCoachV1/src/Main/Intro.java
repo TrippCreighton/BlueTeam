@@ -12,7 +12,7 @@ public class Intro extends JPanel implements Runnable {
 	
 	private JFrame window = new JFrame();
 	private String imagePath = "resources/Intro.png";
-	private int wait = 0; // 4 seconds
+	private int wait = 3000; // 4 seconds
 	private static String audioFile = "resources/Menu_Music.wav";
 	private static String audioFile2 = "resources/Audio_2.wav";
 	private static String audioFile3 = "resources/Audio_3.wav";
@@ -20,11 +20,11 @@ public class Intro extends JPanel implements Runnable {
 	
 	public Intro(){
 		playAudio();
-		this.setPreferredSize(new Dimension(Game.WIDTH, Game.HEIGHT));
+		this.setPreferredSize(new Dimension(1500, Game.HEIGHT));
 		window.add(this);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.pack();
-		window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		//window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 	}

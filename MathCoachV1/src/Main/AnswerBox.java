@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Toolkit;
+import java.awt.Dimension;
 
 public class AnswerBox {
     private static JDialog dialog;
@@ -12,6 +14,10 @@ public class AnswerBox {
     private Handler handler;
     private int correct;
     private int diff;
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    
+    int x = (screenSize.width / 2) + 220;
+    int y = (screenSize.height / 2) - 50;
     
     public AnswerBox(int width, int height, String title, Handler  hand, int diff) {
         
@@ -65,7 +71,9 @@ public class AnswerBox {
         });
 
         //location on screen
-        dialog.setLocation((Game.WIDTH/2)+700, (Game.HEIGHT/2)+100);
+        //dialog.setLocation((Game.WIDTH/2)+700, (Game.HEIGHT/2)+100);
+        dialog.setLocation(x, y);
+
     }
 
     public void createProblem() {
