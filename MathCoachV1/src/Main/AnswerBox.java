@@ -65,7 +65,7 @@ public class AnswerBox {
         });
 
         //location on screen
-        dialog.setLocation(Game.WIDTH/2+800, Game.HEIGHT/2+100);
+        dialog.setLocation((Game.WIDTH/2)+700, (Game.HEIGHT/2)+100);
     }
 
     public void createProblem() {

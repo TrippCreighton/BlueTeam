@@ -117,6 +117,10 @@ public class Menu extends MouseAdapter {
 		//back button for options
 		if(game.gameState == STATE.Options) {
 			if(mouseOver(mx, my, 335, 600, 300, 80)) {
+				
+				sessionNum = XMLReader.readSession("UserData.xml");
+				scoreNum = XMLReader.readScore("UserData.xml");
+				
 				game.gameState = STATE.Menu;
 				return;
 			}
@@ -262,7 +266,8 @@ public class Menu extends MouseAdapter {
 				
 				XMLWriter.updateSessionXML("UserData.xml", 1 + Integer.parseInt(XMLReader.readSession("UserData.xml")));
 				
-
+				sessionNum = XMLReader.readSession("UserData.xml");
+				scoreNum = XMLReader.readScore("UserData.xml");
 				
 				game.gameState = STATE.Menu;
 				return;
@@ -340,7 +345,7 @@ public class Menu extends MouseAdapter {
 		
 		
 		
-		if(HUD.score > reqScore || HUD.time > reqTime) {
+		if(HUD.score >= reqScore || HUD.time > reqTime) {
 			
 			if(isAdapt) {
 				
@@ -628,25 +633,37 @@ public class Menu extends MouseAdapter {
 			int superScore = Integer.parseInt(XMLReader.readScore("UserData.xml"));
 			int superSession = Integer.parseInt(XMLReader.readSession("UserData.xml"));
 			
-			if(superScore / superSession <= 10) {
-				difficult = 3;
-				reqScore--;
-				reqTime += 300;
+			if (superScore / superSession > 20) {
+				difficult = 9;
+				reqScore += 5;
+				reqTime -= 300;
 			}
 			
-			else if(superScore / superSession <= 20) {
+			else if(superScore / superSession >= 10) {
 				difficult = 6;
 				reqScore++;
 				reqTime -= 300;
 			}
 			
 			else {
-				difficult = 9;
-				reqScore += 5;
-				reqTime -= 300;
+				difficult = 3;
+				reqScore--;
+				reqTime += 300;
 			}
 			
 			
+			//Fail safe in case requirements get too extreme
+			if(reqScore < 5)
+				reqScore = 5;
+			
+			if(reqScore > 150)
+				reqScore = 150;
+			
+			if(reqTime < 1000)
+				reqTime = 1000;
+			
+			if(reqTime > 4000)
+				reqTime = 4000;
 
 		}
 		
@@ -675,16 +692,19 @@ public class Menu extends MouseAdapter {
 		if(1 == Integer.parseInt(XMLReader.readAdapt("UserData.xml")))
 			isAdapt = true;
 		
-		if(3 == Integer.parseInt(XMLReader.readDifficult("UserData.xml"))) {
-			difficult = 3;
-		}
+		if(!isAdapt) {
 		
-		if(6 == Integer.parseInt(XMLReader.readDifficult("UserData.xml"))) {
-			difficult = 6;
-		}
+			if(3 == Integer.parseInt(XMLReader.readDifficult("UserData.xml"))) {
+				difficult = 3;
+			}
 		
-		if(9 == Integer.parseInt(XMLReader.readDifficult("UserData.xml"))) {
-			difficult = 9;
+			if(6 == Integer.parseInt(XMLReader.readDifficult("UserData.xml"))) {
+				difficult = 6;
+			}
+		
+			if(9 == Integer.parseInt(XMLReader.readDifficult("UserData.xml"))) {
+				difficult = 9;
+			}
 		}
 	}
 
